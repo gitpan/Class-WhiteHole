@@ -1,5 +1,10 @@
 Revision history for Perl extension Class::WhiteHole
 
+0.04    Wed Feb  7 11:42:48 GMT 2001
+    - Test #4 fails on Win32, but just because a filename was different
+      there than under Unix.  I think I've corrected for it.  
+      NOT A REAL BUG!
+
 0.03    Sun Jul  9 16:48:20 EDT 2000
     - Error message still not quite right.  Now reporting the right
       line number and file.

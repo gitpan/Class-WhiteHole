@@ -1,4 +1,4 @@
-# $Id: WhiteHole.pm,v 1.3 2000/07/09 20:50:46 schwern Exp $
+# $Id: WhiteHole.pm,v 1.4 2001/02/07 11:42:37 schwern Exp $
 
 package Class::WhiteHole;
 
@@ -6,7 +6,7 @@ require 5;
 use strict;
 use vars qw(@ISA $VERSION $ErrorMsg);
 
-$VERSION = '0.03';
+$VERSION = '0.04';
 @ISA = ();
 
 # From 5.6.0's perldiag.

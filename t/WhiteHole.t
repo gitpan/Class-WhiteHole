@@ -57,7 +57,7 @@ sub foo { return 456 }
 ::ok( !eval { Test->bar; 1; },  "autoloader blocked"  ); # must be line 57
 
 # There's a precedence problem.  Can't pass this all at once.
-my $ok = $@ eq qq{Can\'t locate object method "bar" via package "Test" at t/WhiteHole.t line 57.\n};
+my $ok = $@ eq qq{Can\'t locate object method "bar" via package "Test" at $0 line 57.\n};
 ::ok( $ok,                      "Dying message preserved");
 
 ::ok( Test->can('foo'),         "UNIVERSAL not effected" );

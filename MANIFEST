@@ -2,3 +2,4 @@ MANIFEST
 Makefile.PL
 t/WhiteHole.t
 lib/Class/WhiteHole.pm
+Changes

@@ -43,7 +43,7 @@ sub eqarray  {
 }
 
 # Change this to your # of ok() calls + 1
-BEGIN { $Total_tests = 4 }
+BEGIN { $Total_tests = 6 }
 
 package Moo;
 sub AUTOLOAD { return "AUTOLOADER!" }
@@ -54,5 +54,15 @@ sub foo { return 456 }
 @Test::ISA = qw(Class::WhiteHole Moo);
 
 ::ok( Test->foo == 456,         "static methods work" );
-::ok( !eval { Test->bar; 1; },  "autoloader blocked"  );
+::ok( !eval { Test->bar; 1; },  "autoloader blocked"  ); # must be line 57
+
+# There's a precedence problem.  Can't pass this all at once.
+my $ok = $@ eq qq{Can\'t locate object method "bar" via package "Test" at t/WhiteHole.t line 57.\n};
+::ok( $ok,                      "Dying message preserved");
+
 ::ok( Test->can('foo'),         "UNIVERSAL not effected" );
+
+eval {
+    my $test_obj = bless {}, 'Test';
+};
+::ok( !$@,                      "DESTROY() not effected" );

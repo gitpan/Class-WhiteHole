@@ -1,4 +1,4 @@
-# $Id: WhiteHole.pm,v 1.1 2000/07/07 08:13:19 schwern Exp $
+# $Id: WhiteHole.pm,v 1.3 2000/07/09 20:50:46 schwern Exp $
 
 package Class::WhiteHole;
 
@@ -6,11 +6,12 @@ require 5;
 use strict;
 use vars qw(@ISA $VERSION $ErrorMsg);
 
-$VERSION = '0.01';
+$VERSION = '0.03';
 @ISA = ();
 
 # From 5.6.0's perldiag.
-$ErrorMsg = q{Can\'t locate object method "%s" via package "%s"}; #'#
+$ErrorMsg = qq{Can\'t locate object method "%s" via package "%s" }.
+            qq{at %s line %d.\n};
 
 
 =pod
@@ -41,7 +42,7 @@ case, inherit from Class::WhiteHole.  All unhandled methods will
 produce normal Perl error messages.
 
 
-=head1 CAVEATS
+=head1 BUGS & CAVEATS
 
 Be sure to have Class::WhiteHole before the class from which you're
 inheriting AUTOLOAD in the ISA.  Usually you'll want Class::WhiteHole
@@ -49,6 +50,8 @@ to come first.
 
 If your class inherits autoloaded routines this class may cause them
 to stop working.  Choose wisely before using.
+
+White holes are only a hypothesis and may not really exist.
 
 
 =head1 COPYRIGHT
@@ -62,13 +65,23 @@ and/or modify it under the same terms as Perl itself.
 
 Michael G Schwern <schwern@pobox.com>
 
+=head1 SEE ALSO
+
+L<Class::BlackHole>
+
 =cut
 
 sub AUTOLOAD {
-    my($class) = shift;
+    my($proto) = shift;
+    my($class) = ref $proto || $proto;
+
     my($meth) = $Class::WhiteHole::AUTOLOAD =~ m/::([^:]+)$/;
 
-    die sprintf $ErrorMsg, $meth, $class;
+    return if $meth eq 'DESTROY';
+
+    my($callpack, $callfile, $callline) = caller;
+
+    die sprintf $ErrorMsg, $meth, $class, $callfile, $callline;
 }
 
 
